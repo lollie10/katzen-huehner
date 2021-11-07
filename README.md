@@ -17,11 +17,20 @@ Einstellungen erfolgen in einer Datei `config.yaml`. Beispiel:
     images: ./quelle/bilder
     assets: ./quelle/statisch
     templates: ./templates
-    output: ./site
+    output: ./docs
 
-    image_formats: 
-    - '1024x'
-    - '128x64'
+    image_sizes: 
+    - 600
+    - 80
+
+    menu:
+    - title: Katzen
+        href: /
+        img: /images/katze-80.jpg
+    - title: Hühner
+        href: /seite2.html
+        img: /images/huhn-80.jpg
+
 
 Hier wird die Seite "Hühner & Katzen" in einem Zielordner `output` zusammengestellt. 
 
