@@ -1,0 +1,5 @@
+chevron==0.14.0
+Markdown==3.3.4
+Pillow==8.4.0
+python-frontmatter==1.0.0
+PyYAML==6.0
