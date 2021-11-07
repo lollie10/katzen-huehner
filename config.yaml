@@ -3,7 +3,7 @@ pages: ./quelle/seiten
 images: ./quelle/bilder
 assets: ./quelle/statisch
 templates: ./templates
-output: ./site
+output: ./docs
 
 image_sizes: 
   - 600
