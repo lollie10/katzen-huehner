@@ -11,8 +11,8 @@ image_sizes:
 
 menu:
   - title: Katzen
-    href: /
-    img: /images/katze-80.jpg
+    href: ./
+    img: ./images/katze-80.jpg
   - title: Hühner
-    href: /seite2.html
-    img: /images/huhn-80.jpg
+    href: ./seite2.html
+    img: ./images/huhn-80.jpg
