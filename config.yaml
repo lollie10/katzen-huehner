@@ -1,0 +1,11 @@
+title: "Hühner & Katzen"
+pages: ./quelle/seiten
+images: ./quelle/bilder
+assets: ./quelle/statisch
+templates: ./templates
+output: ./site
+
+image_formats: 
+  - '1024x'
+  - '128x64'
+
