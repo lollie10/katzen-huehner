@@ -3,9 +3,9 @@
 '''
 Einfacher Generator für statische Websites
 
-- Seiten in Markdown-Dateien mit Frontmapper
+- Seiten in Markdown-Dateien mit Frontmatter
 - Vorlagen im Mustache-Format
-- 
+- Bilder werden in verschiedene Größen verkleinert
 '''
 
 import chevron
@@ -24,11 +24,17 @@ config = {}
 templates = {}
 
 def load_config():
+    '''
+    Einstellungen aus Datei config.yaml lesen
+    '''
     global config
     config = yaml.load(open('config.yaml'), Loader=yaml.Loader)
 
 
 def load_templates():
+    '''
+    Seitenvorlagen lesen
+    '''
     global templates
 
     dir = config['templates']
@@ -38,6 +44,13 @@ def load_templates():
         
 
 def generate_pages(root_dir, dir = '.'):
+    '''
+    HTML-Seiten erzeugen und ins Zielverzeichnis kopieren. 
+    
+    Dateien im Markdown-Format werden nach HTML gewandelt und
+    über die Seitenvorlage 'article' in eine vollständige 
+    HTML-Datei mit Kopf und Fuß gewandelt.
+    '''
     source_dir = os.path.join(root_dir, dir)
     out_dir = os.path.join(config['output'], dir)
     os.makedirs(out_dir, exist_ok=True) 
@@ -73,6 +86,9 @@ def generate_pages(root_dir, dir = '.'):
 
 
 def generate_images(root_dir, dir = '.'):
+    '''
+    Bilder in verschiedene Größen verkleinern und ins Zielverzeichnis kopieren.
+    '''
     source_dir = os.path.join(root_dir, dir)
     out_dir = os.path.join(config['output'], 'images', dir)
     os.makedirs(out_dir, exist_ok=True) 
@@ -99,6 +115,7 @@ if __name__ == '__main__':
     load_config()
 
     if len(sys.argv) == 2 and sys.argv[1] == 'serve':
+        # Wenn 'serve' angegeben, starte einen Webserver und öffne den Browser
         port = 8000
         print(f'Webserver auf http://localhost:{port}')
         webbrowser.open(f'http://localhost:{port}')
@@ -108,6 +125,7 @@ if __name__ == '__main__':
         httpd = http.server.HTTPServer(('', port), handler)
         httpd.serve_forever()
     else:
+        # Sonst wandle Seiten, Bilder und kopiere sie zusammen mit den statischen Dateien 
         load_templates()
         generate_pages(config['pages'])
         generate_images(config['images'])
