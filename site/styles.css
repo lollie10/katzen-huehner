@@ -1,0 +1,55 @@
+/**
+ * styles.css - Cascading Style Sheets
+ */
+body {
+    margin: 0;
+    background-color: red;
+}
+
+main {
+    background-color: white;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+main p {
+    font-size: 1.2em;
+    line-height: 1.2em;
+}
+
+header img {
+    max-width: 600px;
+}
+
+h1, h2 {
+    font-family: arial;
+}
+
+h1 {
+    border-left: solid 10px #c00;
+    padding: 10px;
+}
+
+footer {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fcc;
+    color: white;
+}
+
+footer p {
+    text-align: center;
+}
+
+footer nav {
+    display: flex;
+    justify-content: center;
+}
+
+footer img {
+    display: block;
+    margin: 20px;
+    border: solid 10px white;
+}

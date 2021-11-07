@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>{{ article.title }} | {{ site.title }}</title>
+        <link href="/styles.css" rel="stylesheet">
+    </head>
+    <body>
+        <main>
+            <header><img alt="{{ article.image.alt }}" src="{{ article.image.src }}"></header>
+            <h1>{{ site.title }}: {{ article.title }}</h1>
+            {{{ content }}}
+        </main>
+
+        <footer>
+            <p>&copy; 2021 &middot; {{ site.title }}</p>
+            <nav>
+            {{# site.menu }}
+                <a title="{{ title }}" href="{{ href }}"><img src="{{ img }}"></a>
+            {{/ site.menu }}
+            </nav>
+        </footer>
+    </body>
+</html>
