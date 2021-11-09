@@ -16,3 +16,6 @@ menu:
   - title: Hühner
     href: ./seite2.html
     img: ./images/huhn-80.jpg
+  - title: Axolotl
+    href: ./seite3.html
+    img: ./images/axolotl-80.jpg
