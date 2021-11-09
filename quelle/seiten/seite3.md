@@ -2,7 +2,7 @@
 title: Axolotl
 image:
     alt: Axolotl
-    src: ./images/Axolotl.jpg
+    src: https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Ambystoma_mexicanum_at_Vancouver_Aquarium.jpg/220px-Ambystoma_mexicanum_at_Vancouver_Aquarium.jpg
 ---
 
 Das Axolotl (Ambystoma mexicanum) ist ein aquatil lebender mexikanischer Schwanzlurch aus der Familie der Querzahnmolche (Ambystomatidae), der natürlicherweise nur als Dauerlarve auftritt. Axolotl erreichen die Geschlechtsreife, ohne ihre äußere Larvengestalt zu verändern und eine bei Amphibien sonst übliche Metamorphose zu durchlaufen. 
