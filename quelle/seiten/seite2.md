@@ -3,6 +3,12 @@ title: Huhn
 image:
     alt: Huhn
     src: ./images/huhn-600.jpg
+colors:
+    background: rgb(0, 247, 255)
+    accent: rgb(75, 246, 252)
+    footer:
+        background: rgb(204, 255, 255)
+        foreground: rgb(23, 149, 252)
 ---
 Das Haushuhn (Gallus gallus domesticus), kurz auch Huhn (von mittelhochdeutsch huon) genannt, ist eine Zuchtform des Bankivahuhns, eines Wildhuhns aus Südostasien, und gehört zur Familie der Fasanenartigen (Phasianidae). Landwirtschaftlich zählen sie zum Geflügel. Das männliche Haushuhn nennt man Hahn oder Gockel, etwas älter auch Poularde und den kastrierten Hahn Kapaun. Das Weibchen heißt Henne, vom 2. Lebensmonat bis zum Erreichen der vollen Legereife Junghenne, Jungtiere führende Hennen Glucke. Die Jungtiere heißen allgemein Küken.
 

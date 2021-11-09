@@ -4,6 +4,24 @@
         <meta charset="utf-8">
         <title>{{ article.title }} | {{ site.title }}</title>
         <link href="./styles.css" rel="stylesheet">
+        <style>
+        {{# article.colors.background }}
+        body { background-color: {{ article.colors.background }}; }
+        {{/ article.colors.background }}
+
+        {{# article.colors.accent }}
+        h1 { border-left-color: {{ article.colors.accent }}; }
+        {{/ article.colors.accent }}
+        
+        {{# article.colors.footer.background }}
+        footer { background-color: {{ article.colors.footer.background }}; }
+        {{/ article.colors.footer.background }}
+        
+        {{# article.colors.footer.foreground }}
+        footer { color: {{ article.colors.footer.foreground }}; }
+        footer img { border-color: {{ article.colors.footer.foreground }}; }
+        {{/ article.colors.footer.foreground }}
+        </style>
     </head>
     <body>
         <main>

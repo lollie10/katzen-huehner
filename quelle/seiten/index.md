@@ -3,6 +3,12 @@ title: Katze
 image:
     alt: Katze
     src: ./images/katze-600.jpg
+colors:
+    background: red
+    accent: '#c00'
+    footer:
+        background: '#fcc'
+        foreground: white
 ---
 Die Katze unten ist nur ein Beispiel. Heute haben wir noch ein paar Seiten für andere Tiere gebaut:
 
