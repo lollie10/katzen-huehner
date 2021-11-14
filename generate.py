@@ -15,6 +15,7 @@ import http.server
 import markdown
 import os
 from PIL import Image, ImageOps
+import re
 import shutil
 import sys
 import webbrowser
@@ -22,6 +23,7 @@ import yaml
 
 config = {}
 templates = {}
+pages = []
 
 def load_config():
     '''
@@ -41,9 +43,52 @@ def load_templates():
     for filename in os.listdir(dir):
         name = os.path.splitext(filename)[0]
         templates[name] = open(os.path.join(dir, filename)).read()
-        
 
-def generate_pages(root_dir, dir = '.'):
+
+def collect_pages(root_dir, dir = '.'):
+    global pages
+
+    source_dir = os.path.join(root_dir, dir)
+    out_dir = os.path.join(config['output'], dir)
+    os.makedirs(out_dir, exist_ok=True)
+
+    for dirname, dirnames, filenames in os.walk(source_dir):
+        for subdir in dirnames:
+            collect_pages(root_dir, os.path.join(dir, subdir))
+
+        for filename in filenames:
+            source_path = os.path.join(source_dir, filename)
+            print("SOURCE", source_path)
+
+            basename = os.path.splitext(filename)[0]
+            if filename.endswith('.md'):
+                out_filename = basename + '.html'
+                out_path = os.path.join(out_dir, out_filename)
+
+                article = frontmatter.load(source_path)
+                
+                pages.append({
+                    'source_path': source_path,
+                    'out_path': out_path,
+                    'dir': dir,
+                    'basename': basename,
+                    'is_index': basename == 'index',
+                    'filename': out_filename,
+                    'meta': article.metadata
+                })
+            else:
+                out_path = os.path.join(out_dir, filename)
+                pages.append({
+                    'source_path': source_path,
+                    'out_path': out_path,
+                    'dir': dir,
+                    'basename': basename,
+                    'is_index': basename == 'index',
+                    'filename': filename,
+                })
+
+        
+def generate_pages():
     '''
     HTML-Seiten erzeugen und ins Zielverzeichnis kopieren. 
     
@@ -51,38 +96,44 @@ def generate_pages(root_dir, dir = '.'):
     über die Seitenvorlage 'article' in eine vollständige 
     HTML-Datei mit Kopf und Fuß gewandelt.
     '''
-    source_dir = os.path.join(root_dir, dir)
-    out_dir = os.path.join(config['output'], dir)
-    os.makedirs(out_dir, exist_ok=True) 
-    
-    for dirname, dirnames, filenames in os.walk(source_dir):
-        for subdir in dirnames:
-            generate_pages(root_dir, os.path.join(dir, subdir))
 
-        for filename in filenames:
-            source_path = os.path.join(source_dir, filename)
-            
-            if filename.endswith('.md'):
-                out_filename = os.path.splitext(filename)[0] + '.html'
-                out_path = os.path.join(out_dir, out_filename)
-                print(f"Generiere {out_path}")
+    for page in pages:
+        
+        source_path = page['source_path']
+        out_path = page['out_path']
+        
+        if 'meta' in page:
+            print(f"Generiere {out_path}")
 
-                with open(out_path, 'w') as out:
-                    article = frontmatter.load(source_path)
-                    content = markdown.markdown(article.content)
-                    html = chevron.render(
-                        templates['article'],
-                        {
-                            'article': article,
-                            'site': config,
-                            'content': content
-                        }
-                    )
-                    out.write(html)
-            else:
-                out_path = os.path.join(out_dir, filename)
-                print(f"Kopiere {out_path}")
-                shutil.copyfile(source_path, out_path)
+            with open(out_path, 'w') as out:
+                article = frontmatter.load(source_path)
+
+                rendered_markdown = markdown.markdown(article.content)
+                content = chevron.render(
+                    template=re.sub('{{&gt;', '{{>', rendered_markdown),
+                    partials_path='partials/',
+                    data={
+                        'page': page,
+                        'site': config,
+                        'pages': pages
+                    },
+                    warn=True
+                )
+                html = chevron.render(
+                    template=templates['article'],
+                    partials_path='partials/',
+                    data={
+                        'page': page,
+                        'site': config,
+                        'content': content,
+                        'pages': pages
+                    },
+                    warn=True
+                )
+                out.write(html)
+        else:
+            print(f"Kopiere {out_path}")
+            shutil.copyfile(source_path, out_path)
 
 
 def generate_images(root_dir, dir = '.'):
@@ -127,6 +178,11 @@ if __name__ == '__main__':
     else:
         # Sonst wandle Seiten, Bilder und kopiere sie zusammen mit den statischen Dateien 
         load_templates()
-        generate_pages(config['pages'])
+        collect_pages(config['pages'])
+
+        shutil.rmtree(config['output'])
+        shutil.copytree(config['assets'], config['output'])
+
+        generate_pages()
         generate_images(config['images'])
-        shutil.copytree(config['assets'], config['output'], dirs_exist_ok=True)
+

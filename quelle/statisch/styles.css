@@ -31,6 +31,26 @@ h1 {
     padding: 10px;
 }
 
+#teasers {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+#teasers a {
+    background-color: red;
+    width: 240px;
+    margin-bottom: 20px;
+    padding: 20px;
+    text-decoration: none;
+    color: white;
+    text-align: center;
+}
+
+#teasers img {
+    border: solid 10px white;
+}
+    
 footer {
     max-width: 600px;
     margin: 0 auto;

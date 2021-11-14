@@ -2,41 +2,43 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>{{ article.title }} | {{ site.title }}</title>
+        <title>{{ page.meta.title }} | {{ site.title }}</title>
         <link href="./styles.css" rel="stylesheet">
         <style>
-        {{# article.colors.background }}
-        body { background-color: {{ article.colors.background }}; }
-        {{/ article.colors.background }}
+        {{# page.meta.colors.background }}
+        body { background-color: {{ page.meta.colors.background }}; }
+        {{/ page.meta.colors.background }}
 
-        {{# article.colors.accent }}
-        h1 { border-left-color: {{ article.colors.accent }}; }
-        {{/ article.colors.accent }}
+        {{# page.meta.colors.accent }}
+        h1 { border-left-color: {{ page.meta.colors.accent }}; }
+        {{/ page.meta.colors.accent }}
         
-        {{# article.colors.footer.background }}
-        footer { background-color: {{ article.colors.footer.background }}; }
-        {{/ article.colors.footer.background }}
+        {{# page.meta.colors.footer.background }}
+        footer { background-color: {{ page.meta.colors.footer.background }}; }
+        {{/ page.meta.colors.footer.background }}
         
-        {{# article.colors.footer.foreground }}
-        footer { color: {{ article.colors.footer.foreground }}; }
-        footer img { border-color: {{ article.colors.footer.foreground }}; }
-        {{/ article.colors.footer.foreground }}
+        {{# page.meta.colors.footer.foreground }}
+        footer { color: {{ page.meta.colors.footer.foreground }}; }
+        footer img { border-color: {{ page.meta.colors.footer.foreground }}; }
+        {{/ page.meta.colors.footer.foreground }}
         </style>
     </head>
     <body>
         <main>
-            <header><img alt="{{ article.image.alt }}" src="{{ article.image.src }}"></header>
-            <h1>{{ site.title }}: {{ article.title }}</h1>
+            <header><img alt="{{ page.meta.image.alt }}" src="{{ page.meta.image.src }}"></header>
+            <h1>{{ site.title }}: {{ page.meta.title }}</h1>
             {{{ content }}}
         </main>
 
         <footer>
-            <p>&copy; 2021 &middot; {{ site.title }}</p>
+          <p>&copy; 2021 &middot; {{ site.title }}</p>
+	  {{^ page.is_index }}
             <nav>
-            {{# site.menu }}
+              {{# site.menu }}
                 <a title="{{ title }}" href="{{ href }}"><img src="{{ img }}"></a>
             {{/ site.menu }}
             </nav>
+	  {{/ page.is_index }} 
         </footer>
     </body>
 </html>

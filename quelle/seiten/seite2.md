@@ -1,8 +1,12 @@
 ---
 title: Huhn
+summary: Hühner sind wuselig.
 image:
     alt: Huhn
     src: ./images/huhn-600.jpg
+teaser_image:
+    alt: Huhn
+    src: ./images/huhn-200.jpg
 colors:
     background: rgb(0, 247, 255)
     accent: rgb(75, 246, 252)
