@@ -70,8 +70,10 @@ def generate_pages(root_dir, dir = '.'):
                 with open(out_path, 'w') as out:
                     article = frontmatter.load(source_path)
                     content = markdown.markdown(article.content)
+                    template = article['template'] if 'template' in article else 'article'
+
                     html = chevron.render(
-                        templates['article'],
+                        templates[template],
                         {
                             'article': article,
                             'site': config,
