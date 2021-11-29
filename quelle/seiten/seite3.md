@@ -1,8 +1,12 @@
 ---
 title: Axolotl
+summary: Axolotls sind geheimnisvoll.
 image:
     alt: Axolotl
     src: ./images/axolotl-600.jpg
+teaser_image:
+    alt: Axolotl
+    src: ./images/axolotl-200.jpg
 # https://paletton.com/#uid=5440S0klNmvNHGauOukdJfL8I5O
 colors:
     background: '#3A337D'

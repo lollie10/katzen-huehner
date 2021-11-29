@@ -10,8 +10,11 @@ image_sizes:
   - 80
 
 menu:
-  - title: Katzen
+  - title: Start
     href: ./
+    img: ./images/home-80.png
+  - title: Katzen
+    href: ./seite1.html
     img: ./images/katze-80.jpg
   - title: Hühner
     href: ./seite2.html

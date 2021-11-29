@@ -15,6 +15,7 @@ import http.server
 import markdown
 import os
 from PIL import Image, ImageOps
+import re
 import shutil
 import sys
 import webbrowser
@@ -22,6 +23,7 @@ import yaml
 
 config = {}
 templates = {}
+pages = []
 
 def load_config():
     '''
@@ -41,16 +43,11 @@ def load_templates():
     for filename in os.listdir(dir):
         name = os.path.splitext(filename)[0]
         templates[name] = open(os.path.join(dir, filename)).read()
-        
 
-def generate_pages(root_dir, dir = '.'):
-    '''
-    HTML-Seiten erzeugen und ins Zielverzeichnis kopieren. 
-    
-    Dateien im Markdown-Format werden nach HTML gewandelt und
-    über die Seitenvorlage 'article' in eine vollständige 
-    HTML-Datei mit Kopf und Fuß gewandelt.
-    '''
+
+def collect_pages(root_dir, dir = '.'):
+    global pages
+
     source_dir = os.path.join(root_dir, dir)
     out_dir = os.path.join(config['output'], dir)
     os.makedirs(out_dir, exist_ok=True) 
@@ -60,39 +57,93 @@ def generate_pages(root_dir, dir = '.'):
             if entry.name.startswith('.'):
                 continue
             if entry.is_dir():
-                generate_pages(root_dir, os.path.join(dir, entry.name))
+                collect_pages(root_dir, os.path.join(dir, entry.name))
             else:
                 source_path = os.path.join(source_dir, entry.name)
-                
+                print("SOURCE", source_path)
+
+                basename = os.path.splitext(entry.name)[0]
                 if entry.name.endswith('.md'):
-                    out_filename = os.path.splitext(entry.name)[0] + '.html'
+                    out_filename = basename + '.html'
                     out_path = os.path.join(out_dir, out_filename)
-                    print(f"Generiere {out_path}")
 
-                    with open(out_path, 'w') as out:
-                        article = frontmatter.load(source_path)
-
-                        if 'filter' in article:
-                            mod = __import__(article['filter'], fromlist=[None])
-                            filter = getattr(mod, 'filter')
-                            article.metadata = filter(article.metadata)
-
-                        content = markdown.markdown(article.content)
-                        template = article['template'] if 'template' in article else 'article'
-
-                        html = chevron.render(
-                            templates[template],
-                            {
-                                'article': article,
-                                'site': config,
-                                'content': content
-                            }
-                        )
-                        out.write(html)
+                    article = frontmatter.load(source_path)
+                    
+                    pages.append({
+                        'source_path': source_path,
+                        'out_path': out_path,
+                        'dir': dir,
+                        'basename': basename,
+                        'is_index': basename == 'index',
+                        'filename': out_filename,
+                        'meta': article.metadata
+                    })
                 else:
                     out_path = os.path.join(out_dir, entry.name)
-                    print(f"Kopiere {out_path}")
-                    shutil.copyfile(source_path, out_path)
+                    pages.append({
+                        'source_path': source_path,
+                        'out_path': out_path,
+                        'dir': dir,
+                        'basename': basename,
+                        'is_index': basename == 'index',
+                        'filename': entry.name,
+                    })
+
+
+def generate_pages():
+    '''
+    HTML-Seiten erzeugen und ins Zielverzeichnis kopieren. 
+    
+    Dateien im Markdown-Format werden nach HTML gewandelt und
+    über die Seitenvorlage 'article' in eine vollständige 
+    HTML-Datei mit Kopf und Fuß gewandelt.
+    '''
+
+    for page in pages:
+        
+        source_path = page['source_path']
+        out_path = page['out_path']
+        
+        if 'meta' in page:
+            print(f"Generiere {out_path}")
+
+            with open(out_path, 'w') as out:
+                article = frontmatter.load(source_path)
+
+                if 'filter' in article:
+                    mod = __import__(article['filter'], fromlist=[None])
+                    filter = getattr(mod, 'filter')
+                    article.metadata = filter(article.metadata)
+
+                rendered_markdown = markdown.markdown(article.content)
+                content = chevron.render(
+                    template=re.sub('{{&gt;', '{{>', rendered_markdown),
+                    partials_path='partials/',
+                    data={
+                        'page': page,
+                        'site': config,
+                        'pages': pages
+                    },
+                    warn=True
+                )
+
+                template = article['template'] if 'template' in article else 'article'
+                html = chevron.render(
+                    template=templates[template],
+                    partials_path='partials/',
+                    data={
+                        'page': page,
+                        'site': config,
+                        'content': content,
+                        'pages': pages
+                    },
+                    warn=True
+                )
+                out.write(html)
+        else:
+            print(f"Kopiere {out_path}")
+            shutil.copyfile(source_path, out_path)
+
 
 
 def generate_images(root_dir, dir = '.'):
@@ -139,6 +190,11 @@ if __name__ == '__main__':
     else:
         # Sonst wandle Seiten, Bilder und kopiere sie zusammen mit den statischen Dateien 
         load_templates()
-        generate_pages(config['pages'])
+        collect_pages(config['pages'])
+
+        shutil.rmtree(config['output'])
+        shutil.copytree(config['assets'], config['output'])
+
+        generate_pages()
         generate_images(config['images'])
-        shutil.copytree(config['assets'], config['output'], dirs_exist_ok=True)
+
