@@ -55,36 +55,44 @@ def generate_pages(root_dir, dir = '.'):
     out_dir = os.path.join(config['output'], dir)
     os.makedirs(out_dir, exist_ok=True) 
     
-    for dirname, dirnames, filenames in os.walk(source_dir):
-        for subdir in dirnames:
-            generate_pages(root_dir, os.path.join(dir, subdir))
-
-        for filename in filenames:
-            source_path = os.path.join(source_dir, filename)
-            
-            if filename.endswith('.md'):
-                out_filename = os.path.splitext(filename)[0] + '.html'
-                out_path = os.path.join(out_dir, out_filename)
-                print(f"Generiere {out_path}")
-
-                with open(out_path, 'w') as out:
-                    article = frontmatter.load(source_path)
-                    content = markdown.markdown(article.content)
-                    template = article['template'] if 'template' in article else 'article'
-
-                    html = chevron.render(
-                        templates[template],
-                        {
-                            'article': article,
-                            'site': config,
-                            'content': content
-                        }
-                    )
-                    out.write(html)
+    with os.scandir(source_dir) as it:
+        for entry in it:
+            if entry.name.startswith('.'):
+                continue
+            if entry.is_dir():
+                generate_pages(root_dir, os.path.join(dir, entry.name))
             else:
-                out_path = os.path.join(out_dir, filename)
-                print(f"Kopiere {out_path}")
-                shutil.copyfile(source_path, out_path)
+                source_path = os.path.join(source_dir, entry.name)
+                
+                if entry.name.endswith('.md'):
+                    out_filename = os.path.splitext(entry.name)[0] + '.html'
+                    out_path = os.path.join(out_dir, out_filename)
+                    print(f"Generiere {out_path}")
+
+                    with open(out_path, 'w') as out:
+                        article = frontmatter.load(source_path)
+
+                        if 'filter' in article:
+                            mod = __import__(article['filter'], fromlist=[None])
+                            filter = getattr(mod, 'filter')
+                            article.metadata = filter(article.metadata)
+
+                        content = markdown.markdown(article.content)
+                        template = article['template'] if 'template' in article else 'article'
+
+                        html = chevron.render(
+                            templates[template],
+                            {
+                                'article': article,
+                                'site': config,
+                                'content': content
+                            }
+                        )
+                        out.write(html)
+                else:
+                    out_path = os.path.join(out_dir, entry.name)
+                    print(f"Kopiere {out_path}")
+                    shutil.copyfile(source_path, out_path)
 
 
 def generate_images(root_dir, dir = '.'):
@@ -95,22 +103,24 @@ def generate_images(root_dir, dir = '.'):
     out_dir = os.path.join(config['output'], 'images', dir)
     os.makedirs(out_dir, exist_ok=True) 
     
-    for dirname, dirnames, filenames in os.walk(source_dir):
-        for subdir in dirnames:
-            generate_images(root_dir, os.path.join(dir, subdir))
+    with os.scandir(source_dir) as it:
+        for entry in it:
+            if entry.name.startswith('.'):
+                continue
+            if entry.is_dir():
+                generate_images(root_dir, os.path.join(dir, entry.name))
+            else:
+                source_path = os.path.join(source_dir, entry.name)
+                base, ext = os.path.splitext(entry.name)
 
-        for filename in filenames:
-            source_path = os.path.join(source_dir, filename)
-            base, ext = os.path.splitext(filename)
+                for size in config['image_sizes']:
+                    out_path = os.path.join(out_dir, base + '-' + str(size) + ext)
+                    print(f"Bild {out_path}")
 
-            for size in config['image_sizes']:
-                out_path = os.path.join(out_dir, base + '-' + str(size) + ext)
-                print(f"Bild {out_path}")
-
-                image = Image.open(source_path)
-                #image.thumbnail((size, size))
-                thumb = ImageOps.fit(image, (size, size), Image.ANTIALIAS)
-                thumb.save(out_path)
+                    image = Image.open(source_path)
+                    #image.thumbnail((size, size))
+                    thumb = ImageOps.fit(image, (size, size), Image.ANTIALIAS)
+                    thumb.save(out_path)
 
 
 if __name__ == '__main__':
