@@ -6,7 +6,7 @@ templates: ./templates
 output: ./docs
 
 image_sizes: 
-  - 600
+  - 1920
   - 80
 
 menu:

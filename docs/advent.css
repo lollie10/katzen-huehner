@@ -1,0 +1,35 @@
+html { 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+/*body { margin: 0; } */
+h1 {
+    color: white;
+    text-shadow: 2px 2px #888;
+    text-align: center;
+}
+.day {
+    background-repeat: no-repeat;
+    background-position: center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    text-align: center;
+    margin: 10px 20%;
+    padding: 20px;
+    font-size: 36px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 2px 2px #888;
+}
+.day.open {
+    border: solid 2px #888;
+    background-color: rgba(255,255,255,0.5);
+}
+.day a {
+    color: white;
+    text-decoration: none;
+}

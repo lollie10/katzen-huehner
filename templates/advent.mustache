@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ article.title }} | {{ site.title }}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.9.4/dist/css/uikit.min.css" />
+    <link href="./advent.css" rel="stylesheet">
+    <style>
+    html { 
+        background: url({{ article.image.src }}) no-repeat center center fixed; 
+    }
+    .day.open {
+        display: none;
+    }
+    .day.closed {
+        display: block;
+    }
+    </style>
+</head>
+<body>
+    <main data-uk-height-viewport="expand: true">
+            <h1>{{ site.title }}: {{ article.title }}</h1>
+
+            <div class="uk-margin" uk-grid>
+                {{# article.source_images }}
+                    <div class="uk-width-1-3@s">
+                        <div class="day open" data-day="{{ n }}" uk-lightbox style="background-image:url(/images/advent/{{ img }}-80.jpg)">
+                            <a  href="/images/advent/{{ img }}-1920.jpg">{{ n }}</a>
+                        </div>
+                        <div class="day closed" id="closed-{{ n }}">{{ n }}</div>
+                    </div>
+                {{/ article.source_images }}
+            </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.9.4/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.9.4/dist/js/uikit-icons.min.js"></script>
+    <script>
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1;
+
+    let doors = document.querySelectorAll('div.day.open')
+    doors.forEach(door => { 
+        const n = door.dataset.day;
+        const day = new Date(`${year}-12-${n}`);
+
+        if (day <= today) {
+            door.style.display = 'block';
+            document.getElementById('closed-' + n).style.display = 'none';
+        }
+    });
+    </script>
+</body>
+</html>
