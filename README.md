@@ -31,7 +31,7 @@ Einstellungen erfolgen in einer Datei `config.yaml`. Beispiel:
         href: /seite2.html
         img: /images/huhn-80.jpg
 
-Die generierte Seiten liegen unter https://codekulturbonn.github.io/katzen-huehner/
+Die generierte Seiten liegen unter https://oschettler.github.io/katzen-huehner/
 
 
 Hier wird die Seite "Hühner & Katzen" in einem Zielordner `output` zusammengestellt. 
