@@ -3,7 +3,7 @@ title: Axolotl
 summary: Axolotls sind geheimnisvoll.
 image:
     alt: Axolotl
-    src: ./images/axolotl-600.jpg
+    src: ./images/axolotl-1920.jpg
 teaser_image:
     alt: Axolotl
     src: ./images/axolotl-200.jpg

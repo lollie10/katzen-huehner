@@ -3,7 +3,7 @@ title: Katze
 summary: Katzen sind cool.
 image:
     alt: Katze
-    src: ./images/katze-600.jpg
+    src: ./images/katze-1920.jpg
 teaser_image:
     alt: Katze
     src: ./images/katze-200.jpg

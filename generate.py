@@ -110,10 +110,10 @@ def generate_pages():
             with open(out_path, 'w') as out:
                 article = frontmatter.load(source_path)
 
-                if 'filter' in article:
-                    mod = __import__(article['filter'], fromlist=[None])
+                if 'filter' in page['meta']:
+                    mod = __import__(page['meta']['filter'], fromlist=[None])
                     filter = getattr(mod, 'filter')
-                    article.metadata = filter(article.metadata)
+                    page['meta'] = filter(page['meta'])
 
                 rendered_markdown = markdown.markdown(article.content)
                 content = chevron.render(
@@ -127,7 +127,7 @@ def generate_pages():
                     warn=True
                 )
 
-                template = article['template'] if 'template' in article else 'article'
+                template = page['meta']['template'] if 'template' in page['meta'] else 'article'
                 html = chevron.render(
                     template=templates[template],
                     partials_path='partials/',

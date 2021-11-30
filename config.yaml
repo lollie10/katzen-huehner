@@ -7,18 +7,18 @@ output: ./docs
 
 image_sizes: 
   - 1920
-  - 80
+  - 200
 
 menu:
   - title: Start
     href: ./
-    img: ./images/home-80.png
+    img: ./images/home-200.png
   - title: Katzen
     href: ./seite1.html
-    img: ./images/katze-80.jpg
+    img: ./images/katze-200.jpg
   - title: Hühner
     href: ./seite2.html
-    img: ./images/huhn-80.jpg
+    img: ./images/huhn-200.jpg
   - title: Axolotl
     href: ./seite3.html
-    img: ./images/axolotl-80.jpg
+    img: ./images/axolotl-200.jpg

@@ -3,7 +3,7 @@ title: Huhn
 summary: Hühner sind wuselig.
 image:
     alt: Huhn
-    src: ./images/huhn-600.jpg
+    src: ./images/huhn-1920.jpg
 teaser_image:
     alt: Huhn
     src: ./images/huhn-200.jpg

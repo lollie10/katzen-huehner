@@ -72,4 +72,5 @@ footer img {
     display: block;
     margin: 20px;
     border: solid 10px white;
+    max-width: 80px;
 }
