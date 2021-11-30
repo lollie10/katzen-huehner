@@ -54,6 +54,10 @@ HTML erzeugen:
 
     ./generate.py
 
+Lokal ansehen:
+
+    ./generate.py serve
+
 ## Bilder
 
 * https://unsplash.com/photos/7GX5aICb5i4
