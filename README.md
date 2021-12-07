@@ -1,5 +1,7 @@
 # Eine Website mit Seitengenerator in Python
 
+Luzies Kopie
+
 Verwendet:
 
 * Einstellungen im YAML-Format: [PyYAML](https://pyyaml.org/wiki/PyYAMLDocumentation)
