@@ -3,11 +3,11 @@
  */
 body {
     margin: 0;
-    background-color: red;
+    background-color: rgb(0, 153, 255);
 }
 
 main {
-    background-color: white;
+    background-color: rgb(122, 255, 237);
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
@@ -27,7 +27,7 @@ h1, h2 {
 }
 
 h1 {
-    border-left: solid 10px #c00;
+    border-left: solid 10px rgb(0, 119, 255);
     padding: 10px;
 }
 
@@ -38,7 +38,7 @@ h1 {
 }
 
 #teasers a {
-    background-color: red;
+    background-color: rgb(0, 255, 157);
     width: 240px;
     margin-bottom: 20px;
     padding: 20px;
